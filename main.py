@@ -3,6 +3,8 @@ import psycopg2
 
 def con():
     global conn
+    with open('info.txt', 'r')
+
     conn = psycopg2.connect(dbname='main', user='postgres', password='admin')
     return conn
 
