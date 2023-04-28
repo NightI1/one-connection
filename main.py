@@ -1,24 +1,33 @@
 import psycopg2
+import argparse
 
 
-def con():
-    global conn
-    with open('info.txt', 'r')
+def main():
+    conn = connect(*readfile(read()))
+    all_table(conn)
 
-    conn = psycopg2.connect(dbname='main', user='postgres', password='admin')
-    return conn
+def read():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', type=str)
+    args = parser.parse_args()
+    return args.p
+def readfile(file_name):
+    with open(file_name, 'r') as info:
+        dbname, user, password = info.readline().strip(), info.readline().strip(), info.readline().strip()
+    return dbname, user, password
 
-def curs():
-    return con().cursor()
+def connect(dbname,user,password):
+    con = psycopg2.connect(dbname=dbname, user=user, password=password)
+    return con
 
-
-def all_table():
-    with curs() as cursor:
-        cursor.execute('''SELECT table_name FROM information_schema.tables
+def all_table(con):
+    cur = con.cursor()
+    cur.execute('''SELECT table_name FROM information_schema.tables
 WHERE table_schema NOT IN ('information_schema','pg_catalog');''')
-        print(*cursor.fetchall())
-    conn.close()
+    print(*cur.fetchall())
+    con.close()
 
 
 
-all_table()
+if '__main__' == __name__:
+    main()
