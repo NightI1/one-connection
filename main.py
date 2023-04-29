@@ -3,10 +3,10 @@ import argparse
 
 
 def main():
-    conn = connect(*readfile(read()))
-    all_table(conn)
+    conn = connect(*readfile(parse_args()))
+    tables(conn)
 
-def read():
+def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', type=str)
     args = parser.parse_args()
@@ -16,11 +16,11 @@ def readfile(file_name):
         dbname, user, password = info.readline().strip(), info.readline().strip(), info.readline().strip()
     return dbname, user, password
 
-def connect(dbname,user,password):
+def connect(dbname: str,user: str,password: str):
     con = psycopg2.connect(dbname=dbname, user=user, password=password)
     return con
 
-def all_table(con):
+def tables(con):
     cur = con.cursor()
     cur.execute('''SELECT table_name FROM information_schema.tables
 WHERE table_schema NOT IN ('information_schema','pg_catalog');''')
