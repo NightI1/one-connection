@@ -29,12 +29,11 @@ def connect(dbname: str,user: str,password: str):
 def sql_request(con):
     cur = con.cursor()
     request = input('sql> ')
+    while ';' not in request[-1]:
+        request = request+' ' + input('sql> ')
     cur.execute(request)
-    while ';'  not in request[-1]:
-        request = input('sql> ')
-        cur.execute(request)
-        print(cur.fetchall())
-        con.close()
+    print(cur.fetchall())
+    con.close()
 
 def tables(con):
     cur = con.cursor()
