@@ -17,7 +17,7 @@ def parse_args():
     args = parser.parse_args()
     return args.p, args.a
 
-def readfile(file_name):
+def readfile(file_name: str):
     with open(file_name, 'r') as info:
         dbname, user, password = info.readline().strip(), info.readline().strip(), info.readline().strip()
     return dbname, user, password
@@ -30,10 +30,12 @@ def sql_request(con):
     cur = con.cursor()
     request = input('sql> ')
     while ';' not in request[-1]:
-        request = request+' ' + input('sql> ')
+        request = request+' '+ input('sql> ')
     cur.execute(request)
-    print(cur.fetchall())
+    print_request(cur)
     con.close()
+def print_request(cur):
+    print(cur.fetchall())
 
 def tables(con):
     cur = con.cursor()
