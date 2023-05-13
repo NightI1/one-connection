@@ -34,6 +34,7 @@ def sql_request(con):
     cur.execute(request)
     print_request(cur)
     con.close()
+
 def print_request(cur):
     print(cur.fetchall())
 
