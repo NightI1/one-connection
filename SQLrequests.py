@@ -4,7 +4,7 @@ import argparse
 
 def main():
     file_name, no_tables = parse_args()
-    conn = connect(*readfile(file_name))
+    conn = connect(*data_return(file_name))
     if no_tables:
         sql_request(conn)
     else:
@@ -17,7 +17,7 @@ def parse_args():
     args = parser.parse_args()
     return args.p, args.a
 
-def readfile(file_name: str):
+def data_return(file_name: str):
     with open(file_name, 'r') as info:
         dbname, user, password = info.readline().strip(), info.readline().strip(), info.readline().strip()
     return dbname, user, password
@@ -29,8 +29,8 @@ def connect(dbname: str,user: str,password: str):
 def sql_request(con):
     cur = con.cursor()
     request = input('sql> ')
-    while ';' not in request[-1]:
-        request = request+' '+ input('sql> ')
+    while ';' not in request:
+        request = input('sql> ')
     cur.execute(request)
     print_request(cur)
     con.close()
@@ -40,8 +40,9 @@ def print_request(cur):
 
 def tables(con):
     cur = con.cursor()
-    cur.execute('''SELECT table_name FROM information_schema.tables
-WHERE table_schema NOT IN ('information_schema','pg_catalog');''')
+    nahui_emy_nazvanie = '''SELECT table_name FROM information_schema.tables
+WHERE table_schema NOT IN ('information_schema','pg_catalog');'''
+    cur.execute(nahui_emy_nazvanie)
     print(*cur.fetchall())
     con.close()
 
