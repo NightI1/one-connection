@@ -1,7 +1,6 @@
 import psycopg2
 import argparse
 
-
 def main():
     file_name, no_tables = parse_args()
     conn = connect(*data_return(file_name))
@@ -30,7 +29,7 @@ def sql_request(con):
     cur = con.cursor()
     request = input('sql> ')
     while ';' not in request:
-        request = input('sql> ')
+        request.join(input('sql> '))
     cur.execute(request)
     print_request(cur)
     con.close()
@@ -40,9 +39,9 @@ def print_request(cur):
 
 def tables(con):
     cur = con.cursor()
-    nahui_emy_nazvanie = '''SELECT table_name FROM information_schema.tables
+    request = '''SELECT table_name FROM information_schema.tables
 WHERE table_schema NOT IN ('information_schema','pg_catalog');'''
-    cur.execute(nahui_emy_nazvanie)
+    cur.execute(request)
     print(*cur.fetchall())
     con.close()
 
